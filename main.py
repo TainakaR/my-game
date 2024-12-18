@@ -43,7 +43,7 @@ boxes = [
 
 # Bar positions and movement states
 bars = [
-    {"y": random.randint(box[1], box[1] + BOX_HEIGHT), "moving_up": True, "stopped": False}
+    {"y": box[1] + BOX_HEIGHT - BAR_HEIGHT, "moving_up": True, "stopped": False}
     for box in boxes
 ]
 
@@ -80,15 +80,18 @@ while True:
         pygame.draw.rect(screen, BLACK, (box_x, box_y, BOX_WIDTH, BOX_HEIGHT), 2)
 
         # Draw bar
-        if not bars[i]["stopped"]:
-            if bars[i]["moving_up"]:
-                bars[i]["y"] -= BAR_SPEED
-                if bars[i]["y"] <= box_y:
-                    bars[i]["moving_up"] = False
-            else:
-                bars[i]["y"] += BAR_SPEED
-                if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
-                    bars[i]["moving_up"] = True
+        if i == current_box:
+            if not bars[i]["stopped"]:
+                if bars[i]["moving_up"]:
+                    bars[i]["y"] -= BAR_SPEED
+                    if bars[i]["y"] <= box_y:
+                        bars[i]["moving_up"] = False
+                else:
+                    bars[i]["y"] += BAR_SPEED
+                    if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
+                        bars[i]["moving_up"] = True
+        else:
+            bars[i]["y"] = box_y + BOX_HEIGHT - BAR_HEIGHT
 
         pygame.draw.rect(
             screen, RED if i == current_box else GREEN,
