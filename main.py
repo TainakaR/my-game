@@ -1,63 +1,104 @@
 import pygame
 import sys
+import random
 
-# 初期化
+# Initialize Pygame
 pygame.init()
 
-# 画面サイズとタイトル設定
+# Screen dimensions
 SCREEN_WIDTH = 800
 SCREEN_HEIGHT = 600
-SCREEN_TITLE = "My Pygame Project"
 
-# 色の定義 (RGB)
+# Colors
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
-BLUE = (0, 0, 255)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
 
-# ゲーム画面の設定
+# Game settings
+BOX_WIDTH = 150
+BOX_HEIGHT = 400
+BOX_SPACING = 50
+BAR_HEIGHT = 10
+BAR_SPEED = 5
+
+def calculate_score(bar_y, box_y, box_height):
+    """Calculate the score based on the bar's position."""
+    top = box_y
+    bottom = box_y + box_height
+    return max(0, int(((bottom - bar_y) / box_height) * 100))
+
+# Initialize screen
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-pygame.display.set_caption(SCREEN_TITLE)
+pygame.display.set_caption("Vertical Box Game")
 
-# フレームレート設定
+# Clock for controlling frame rate
 clock = pygame.time.Clock()
-FPS = 60
 
-# メインゲームループ
-def main():
-    # ゲームの初期化
-    running = True
+# Box positions
+boxes = [
+    ((i * (BOX_WIDTH + BOX_SPACING)) + BOX_SPACING, (SCREEN_HEIGHT - BOX_HEIGHT) // 2)
+    for i in range(3)
+]
 
-    # プレイヤーの四角いオブジェクト (デモ用)
-    player_rect = pygame.Rect(50, 50, 50, 50)
-    player_speed = 5
+# Bar positions and movement states
+bars = [
+    {"y": random.randint(box[1], box[1] + BOX_HEIGHT), "moving_up": True, "stopped": False}
+    for box in boxes
+]
 
-    while running:
-        # イベント処理
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:  # ウィンドウを閉じる
-                running = False
+# Game variables
+current_box = 0
+scores = [0, 0, 0]
 
-        # キー入力処理
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_UP]:
-            player_rect.y -= player_speed
-        if keys[pygame.K_DOWN]:
-            player_rect.y += player_speed
-        if keys[pygame.K_LEFT]:
-            player_rect.x -= player_speed
-        if keys[pygame.K_RIGHT]:
-            player_rect.x += player_speed
+# Main game loop
+while True:
+    screen.fill(WHITE)
 
-        # 画面の更新
-        screen.fill(WHITE)  # 背景色を白にする
-        pygame.draw.rect(screen, BLUE, player_rect)  # プレイヤーを描画
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            pygame.quit()
+            sys.exit()
 
-        pygame.display.flip()  # 描画内容を反映
-        clock.tick(FPS)  # フレームレートを維持
+        if event.type == pygame.KEYDOWN:
+            if event.key == pygame.K_SPACE and not bars[current_box]["stopped"]:
+                bars[current_box]["stopped"] = True
+                scores[current_box] = calculate_score(
+                    bars[current_box]["y"], boxes[current_box][1], BOX_HEIGHT
+                )
+                if current_box < len(boxes) - 1:
+                    current_box += 1
+                else:
+                    print("Final Scores:", scores)
+                    pygame.time.wait(2000)
+                    pygame.quit()
+                    sys.exit()
 
-    pygame.quit()
-    sys.exit()
+    # Draw boxes and bars
+    for i, (box_x, box_y) in enumerate(boxes):
+        # Draw box
+        pygame.draw.rect(screen, BLACK, (box_x, box_y, BOX_WIDTH, BOX_HEIGHT), 2)
 
-# エントリーポイント
-if __name__ == "__main__":
-    main()
+        # Draw bar
+        if not bars[i]["stopped"]:
+            if bars[i]["moving_up"]:
+                bars[i]["y"] -= BAR_SPEED
+                if bars[i]["y"] <= box_y:
+                    bars[i]["moving_up"] = False
+            else:
+                bars[i]["y"] += BAR_SPEED
+                if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
+                    bars[i]["moving_up"] = True
+
+        pygame.draw.rect(
+            screen, RED if i == current_box else GREEN,
+            (box_x, bars[i]["y"], BOX_WIDTH, BAR_HEIGHT)
+        )
+
+    # Display scores
+    for i, score in enumerate(scores):
+        score_text = pygame.font.SysFont(None, 36).render(f"Score: {score}", True, BLACK)
+        screen.blit(score_text, (boxes[i][0], boxes[i][1] - 40))
+
+    pygame.display.flip()
+    clock.tick(60)
