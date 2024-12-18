@@ -90,9 +90,7 @@ while True:
                     bars[i]["y"] += BAR_SPEED
                     if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
                         bars[i]["moving_up"] = True
-        else:
-            bars[i]["y"] = box_y + BOX_HEIGHT - BAR_HEIGHT
-
+        
         pygame.draw.rect(
             screen, RED if i == current_box else GREEN,
             (box_x, bars[i]["y"], BOX_WIDTH, BAR_HEIGHT)
