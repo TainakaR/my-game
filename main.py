@@ -1,6 +1,5 @@
 import pygame
 import sys
-import random
 
 # Initialize Pygame
 pygame.init()
@@ -21,6 +20,10 @@ BOX_HEIGHT = 400
 BOX_SPACING = 50
 BAR_HEIGHT = 10
 BAR_SPEED = 5
+
+# Game variables
+current_box = 0  # 現在操作するボックスのインデックス
+scores = [0, 0, 0]  # ボックスごとのスコア
 
 def calculate_score(bar_y, box_y, box_height):
     """Calculate the score based on the bar's position."""
@@ -47,13 +50,12 @@ bars = [
     for box in boxes
 ]
 
-# Game variables
-current_box = 0
-scores = [0, 0, 0]
+# Load bar image
+bar_image = pygame.image.load("assets/images/bar.png")  # 画像をロード
 
 # Main game loop
 while True:
-    screen.fill(WHITE)
+    screen.fill(WHITE)  # 背景を白で塗りつぶす
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -79,22 +81,20 @@ while True:
         # Draw box
         pygame.draw.rect(screen, BLACK, (box_x, box_y, BOX_WIDTH, BOX_HEIGHT), 2)
 
-        # Draw bar
-        if i == current_box:
-            if not bars[i]["stopped"]:
-                if bars[i]["moving_up"]:
-                    bars[i]["y"] -= BAR_SPEED
-                    if bars[i]["y"] <= box_y:
-                        bars[i]["moving_up"] = False
-                else:
-                    bars[i]["y"] += BAR_SPEED
-                    if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
-                        bars[i]["moving_up"] = True
-        
-        pygame.draw.rect(
-            screen, RED if i == current_box else GREEN,
-            (box_x, bars[i]["y"], BOX_WIDTH, BAR_HEIGHT)
-        )
+        # Move and draw the bar
+        if i == current_box and not bars[i]["stopped"]:
+            if bars[i]["moving_up"]:
+                bars[i]["y"] -= BAR_SPEED
+                if bars[i]["y"] <= box_y:
+                    bars[i]["moving_up"] = False
+            else:
+                bars[i]["y"] += BAR_SPEED
+                if bars[i]["y"] >= box_y + BOX_HEIGHT - BAR_HEIGHT:
+                    bars[i]["moving_up"] = True
+
+        # Draw bar image
+        bar_position = (box_x, bars[i]["y"])
+        screen.blit(bar_image, bar_position)
 
     # Display scores
     for i, score in enumerate(scores):
@@ -103,3 +103,4 @@ while True:
 
     pygame.display.flip()
     clock.tick(60)
+
