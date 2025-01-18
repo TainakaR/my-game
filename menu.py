@@ -4,14 +4,30 @@ from epilogue import show_epilogue  # エピローグを表示する関数をイ
 from minigame import run_minigame  # ミニゲームを実行する関数をインポート
 
 def show_menu(screen):
+    # 画像を読み込む
+    try:
+        background = pygame.image.load('assets/images/menu_background.png')
+        background = pygame.transform.scale(background, (800, 600))  # ウィンドウサイズに合わせる
+    except pygame.error as e:
+        print(f"Could not load background.png: {e}")
+        return  # 背景画像が読み込めない場合、メニュー表示を終了
+
+    try:
+        logo = pygame.image.load('assets/images/menu_logo.png')
+        logo_rect = logo.get_rect(center=(400, 100))  # 位置を中心に設定
+    except pygame.error as e:
+        print(f"Could not load logo.png: {e}")
+        return  # ロゴ画像が読み込めない場合、メニュー表示を終了
+
     start_button = pygame.image.load('assets/images/menu_start_button.png')
     rules_button = pygame.image.load('assets/images/menu_rules_button.png')
 
     while True:
-        screen.fill((0, 0, 0))  # 背景を黒に
+        screen.blit(background, (0, 0))  # 背景を描画
+        screen.blit(logo, logo_rect)  # ロゴを描画
         screen.blit(start_button, (300, 200))  # Startボタンを描画
         screen.blit(rules_button, (300, 300))  # Rulesボタンを描画
-        pygame.display.flip()
+        pygame.display.flip()  # 画面を更新
 
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
