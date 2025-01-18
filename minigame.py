@@ -15,7 +15,8 @@ def draw_bar(screen, bar_image, bar_rect):
     screen.blit(bar_image, bar_rect)
 
 def calculate_score(bar_pos):
-    top_position = 50     # ボックスの上からの位置
+    # 上端、中央、下端の位置を指定
+    top_position = 50  # ボックスの上からの位置
     bottom_position = 350  # ボックスの下からの位置
 
     if bar_pos <= top_position:
@@ -35,68 +36,66 @@ def run_minigame(screen):
     bar_image = pygame.image.load('bar.png').convert_alpha()
 
     boxes = [
-        {'name': 'A', 'rect': pygame.Rect(100, 100, BOX_WIDTH, BOX_HEIGHT), 
-         'bar_y': 200, 'bar_moving': True, 'score': 0},
-        {'name': 'B', 'rect': pygame.Rect(320, 100, BOX_WIDTH, BOX_HEIGHT), 
-         'bar_y': 200, 'bar_moving': False, 'score': 0},
-        {'name': 'C', 'rect': pygame.Rect(540, 100, BOX_WIDTH, BOX_HEIGHT), 
-         'bar_y': 200, 'bar_moving': False, 'score': 0},
+        {'name': 'A', 'rect': pygame.Rect(100, 100, BOX_WIDTH, BOX_HEIGHT)},
+        {'name': 'B', 'rect': pygame.Rect(320, 100, BOX_WIDTH, BOX_HEIGHT)},
+        {'name': 'C', 'rect': pygame.Rect(540, 100, BOX_WIDTH, BOX_HEIGHT)},
     ]
 
-    for box_index in range(len(boxes)):
-        current_box = boxes[box_index]
+    for box in boxes:
+        # バーの初期位置をボックスの中央に設定
+        bar_rect = pygame.Rect(
+            box['rect'].centerx - (BAR_WIDTH // 2),  # 中央揃え
+            box['rect'].centery - (BAR_HEIGHT // 2),  # 中央揃え
+            BAR_WIDTH,
+            BAR_HEIGHT
+        )
         y_velocity = 5  # バーの上下速度
+        bar_moving = True
+
         clock = pygame.time.Clock()
 
-        while True:
+        while bar_moving:
             screen.fill((0, 0, 0))  # 画面を黒に
 
             # 各ボックスを描画
-            for i, box in enumerate(boxes):
-                draw_box(screen, box_image, box['rect'])
-                
-                # バーの位置を更新
-                bar_rect = pygame.Rect(
-                    box['rect'].centerx - (BAR_WIDTH // 2),
-                    box['bar_y'] - (BAR_HEIGHT // 2),
-                    BAR_WIDTH,
-                    BAR_HEIGHT
-                )
-                
-                # 動いているバーだけ更新
-                if box['bar_moving']:
-                    bar_rect.y += y_velocity
+            for b in boxes:
+                draw_box(screen, box_image, b['rect'])
 
-                    # ボックス内での制限
-                    if bar_rect.top <= box['rect'].top:
-                        bar_rect.top = box['rect'].top
-                        y_velocity = -y_velocity  # 反転（下に移動）
-                    elif bar_rect.bottom >= box['rect'].bottom:
-                        bar_rect.bottom = box['rect'].bottom
-                        y_velocity = -y_velocity  # 反転（上に移動）
-
-                # バーを描画
-                draw_bar(screen, bar_image, bar_rect)
-
-                # スペースキーでバーを止める
-                for event in pygame.event.get():
-                    if event.type == pygame.QUIT:
-                        pygame.quit()
-                        sys.exit()
-                    if event.type == pygame.KEYDOWN:
-                        if event.key == pygame.K_SPACE and box['bar_moving']:  # スペースキーでバーを止める
-                            box['bar_y'] = bar_rect.y  # バーの位置を保持
-                            box['score'] = calculate_score(bar_rect.y)
-                            print(f"Box {box['name']} Score: {box['score']}")  # スコア表示
-                            box['bar_moving'] = False  # バーを止める
-
+            # バーを描画
+            draw_bar(screen, bar_image, bar_rect)
             pygame.display.flip()  # 画面を更新
+
+            # バーを上下させる
+            bar_rect.y += y_velocity
+
+            # ボックス内での制限
+            if bar_rect.top <= box['rect'].top:
+                bar_rect.top = box['rect'].top
+                y_velocity = -y_velocity  # 反転（下に移動）
+            elif bar_rect.bottom >= box['rect'].bottom:
+                bar_rect.bottom = box['rect'].bottom
+                y_velocity = -y_velocity  # 反転（上に移動）
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    sys.exit()
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_SPACE:  # スペースキーでバーを止める
+                        score = calculate_score(bar_rect.y)
+                        print(f"Box {box['name']} Score: {score}")  # スコア表示
+                        bar_moving = False  # バーを止める
+            
             clock.tick(FPS)
 
-            # 他のボックスのバーを中央に配置
-            for i, box in enumerate(boxes):
-                if i != box_index and not box['bar_moving']:
-                    box['bar_y'] = 200  # 中央に戻す
+        # 各ボックスのバーが停止した位置を表示
+        screen.fill((0, 0, 0))  # 画面を黒に
+        for b in boxes:
+            draw_box(screen, box_image, b['rect'])
+        draw_bar(screen, bar_image, bar_rect)  # 停止したバーを描画
+        pygame.display.flip()
 
-            if not current_box['bar_moving']:
-                break  # 現在
+        # 次のボックスのために待機
+        pygame.time.wait(2000)  # 2秒間待つ
+        
+    print("ミニゲームが終了しました。再帰的にメニュー画面に戻ります。")
