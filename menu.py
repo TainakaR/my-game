@@ -2,10 +2,10 @@ import pygame
 
 def show_menu(screen):
     # メニュー画面の設定や画像の読み込み
-    background_image = pygame.image.load("menu_background.png")
-    logo_image = pygame.image.load("menu_logo.png")
-    start_button_image = pygame.image.load("menu_start_button.png")
-    rules_button_image = pygame.image.load("menu_rules_button.png")
+    background_image = pygame.image.load("assets/images/menu_background.png")
+    logo_image = pygame.image.load("assets/images/menu_logo.png")
+    start_button_image = pygame.image.load("assets/images/menu_start_button.png")
+    rules_button_image = pygame.image.load("assets/images/menu_rules_button.png")
 
     # ボタンの位置
     start_button_rect = start_button_image.get_rect(center=(400, 250))
