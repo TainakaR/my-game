@@ -16,8 +16,8 @@ def draw_bar(screen, bar_image, bar_rect):
 
 def calculate_score(bar_pos):
     # 上端、中央、下端の位置を指定
-    top_position = 50  # ボックスの上からの位置
-    bottom_position = 350  # ボックスの下からの位置
+    top_position = 100  # ボックスの上からの位置
+    bottom_position = 500  # ボックスの下からの位置
 
     if bar_pos <= top_position:
         return 30
@@ -25,7 +25,7 @@ def calculate_score(bar_pos):
         return 0
     else:
         # 相対的な点数を計算
-        return int(30 - ((bar_pos - top_position) / (bottom_position - top_position) * 30))
+        return int((bottom_position-bar_pos)/int((bottom_position-top_position)/30))
 
 def run_minigame(screen):
     pygame.font.init()
@@ -97,5 +97,5 @@ def run_minigame(screen):
 
         # 次のボックスのために待機
         pygame.time.wait(2000)  # 2秒間待つ
-        
+
     print("ミニゲームが終了しました。再帰的にメニュー画面に戻ります。")
