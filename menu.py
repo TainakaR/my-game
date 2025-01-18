@@ -1,31 +1,32 @@
 import pygame
+import sys
+from epilogue import show_epilogue  # エピローグを表示する関数をインポート
+from minigame import run_minigame  # ミニゲームを実行する関数をインポート
 
 def show_menu(screen):
-    # メニュー画面の設定や画像の読み込み
-    background_image = pygame.image.load("assets/images/menu_background.png")
-    logo_image = pygame.image.load("assets/images/menu_logo.png")
-    start_button_image = pygame.image.load("assets/images/menu_start_button.png")
-    rules_button_image = pygame.image.load("assets/images/menu_rules_button.png")
-
-    # ボタンの位置
-    start_button_rect = start_button_image.get_rect(center=(400, 250))
-    rules_button_rect = rules_button_image.get_rect(center=(400, 350))
+    start_button = pygame.image.load('assets/images/menu_start_button.png')
+    rules_button = pygame.image.load('assets/images/menu_rules_button.png')
 
     while True:
+        screen.fill((0, 0, 0))  # 背景を黒に
+        screen.blit(start_button, (300, 200))  # Startボタンを描画
+        screen.blit(rules_button, (300, 300))  # Rulesボタンを描画
+        pygame.display.flip()
+
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 pygame.quit()
-                return "exit"  # 終了時
-            
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if start_button_rect.collidepoint(event.pos):
-                    return "minigame"  # ゲームスタート
-                elif rules_button_rect.collidepoint(event.pos):
-                    return "epilogue"  # ルール説明
+                sys.exit()
 
-        screen.blit(background_image, (0, 0))
-        screen.blit(logo_image, (400 - logo_image.get_width() // 2, 50))
-        screen.blit(start_button_image, start_button_rect.topleft)
-        screen.blit(rules_button_image, rules_button_rect.topleft)
-        
-        pygame.display.flip()
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                mouse_pos = pygame.mouse.get_pos()
+                # Startボタンがクリックされた場合
+                if 300 <= mouse_pos[0] <= 500 and 200 <= mouse_pos[1] <= 250:
+                    # エピローグを表示
+                    show_epilogue(screen)  
+                    # ミニゲームを開始
+                    run_minigame(screen)
+
+                # Rulesボタンがクリックされた場合（処理はまだ未実装）
+                elif 300 <= mouse_pos[0] <= 500 and 300 <= mouse_pos[1] <= 350:
+                    print("Rules button clicked - implementation required.")

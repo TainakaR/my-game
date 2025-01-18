@@ -1,22 +1,34 @@
 import pygame
 
 def show_epilogue(screen):
-    # エピローグ画面の設定や画像の読み込み
-    font = pygame.font.Font(None, 36)
-    text_surface = font.render("ゲームルール説明", True, (255, 255, 255))
-    back_button_rect = text_surface.get_rect(center=(400, 300))
+    # 画像ファイル名のリスト
+    images = ['epilogue_image1.png', 'epilogue_image2.png', 'epilogue_image3.png']
+    image_count = len(images)
     
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                return "exit"  # 終了時
+    # スライドショーを実行する回数
+    for i in range(image_count):
+        # メインループ
+        while True:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pygame.quit()
+                    return  # 終了時
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:  # ESCキーで戻る
+                    return
+                
+            # 画像を読み込む
+            try:
+                background = pygame.image.load(images[i])
+                background = pygame.transform.scale(background, (800, 600))  # ウィンドウサイズにスケーリング
+            except pygame.error as e:
+                print(f"Could not load image: {images[i]}. {e}")
+                return  # エラーが発生した場合は終了
             
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                if back_button_rect.collidepoint(event.pos):
-                    return "menu"  # メニューに戻る
-
-        screen.fill((0, 0, 0))  # 背景を黒に
-        screen.blit(text_surface, back_button_rect.topleft)
-        
-        pygame.display.flip()
+            screen.blit(background, (0, 0))  # 背景を描画
+            pygame.display.flip()  # 画面を更新
+            
+            # 0.5秒待つ
+            pygame.time.delay(1500)  # 500ミリ秒 (1.5秒) の遅延
+            
+            # 画像が表示されたらループを抜ける
+            break
