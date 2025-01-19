@@ -2,7 +2,7 @@ import pygame
 import sys
 
 # ミニゲームの設定
-BOX_WIDTH = 200
+BOX_WIDTH = 150
 BOX_HEIGHT = 400
 BAR_WIDTH = 150
 BAR_HEIGHT = 26
