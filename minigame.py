@@ -1,12 +1,12 @@
 import pygame
 
 # 定数の定義
-WIDTH = 600
-HEIGHT = 800
+WIDTH = 800
+HEIGHT = 600
 BOX_WIDTH = 150
 BOX_HEIGHT = 400
 BAR_HEIGHT = 20
-BAR_SPEED = 2
+BAR_SPEED = 7
 FPS = 30
 
 def run_minigame(screen):
@@ -33,9 +33,9 @@ def run_minigame(screen):
 
     # ボックスの位置を設定
     boxes_positions = [
-        (75, 100),   # ボックス1の位置
-        (225, 100),  # ボックス2の位置
-        (375, 100)   # ボックス3の位置
+        (70, 100),   # ボックス1の位置
+        (290, 100),  # ボックス2の位置
+        (510, 100)   # ボックス3の位置
     ]
 
     # バーの初期位置と状態の設定
@@ -54,21 +54,22 @@ def run_minigame(screen):
             if event.type == pygame.QUIT:
                 running = False
             elif event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_SPACE and bar_moving[current_bar]:
-                    bar_moving[current_bar] = False  # 現在のバーを停止させる
+                if current_bar < 3 and bar_moving[current_bar]:  # current_barが3未満の場合のみアクセス
+                    if event.key == pygame.K_SPACE:
+                        bar_moving[current_bar] = False  # 現在のバーを停止させる
                     
-                    # 得点計算
-                    position = bars_positions[current_bar]
-                    if position == 0:
-                        scores[current_bar] = 0
-                    elif position >= (BOX_HEIGHT - BAR_HEIGHT):
-                        scores[current_bar] = 30
-                    else:
-                        scores[current_bar] = max(30 - (30 * position // (BOX_HEIGHT - BAR_HEIGHT)), 0)
+                        # 得点計算
+                        position = bars_positions[current_bar]
+                        if position == 0:
+                            scores[current_bar] = 0
+                        elif position >= (BOX_HEIGHT - BAR_HEIGHT):
+                            scores[current_bar] = 30
+                        else:
+                            scores[current_bar] = max(30 - (30 * position // (BOX_HEIGHT - BAR_HEIGHT)), 0)
                     
-                    current_bar += 1  # 次のバーに移動
-                    if current_bar < 3:
-                        bar_moving[current_bar] = True  # 次のバーを動かし始める
+                        current_bar += 1  # 次のバーに移動
+                        if current_bar < 3:
+                            bar_moving[current_bar] = True  # 次のバーを動かし始める
 
         # バーの動き
         for i in range(len(bar_moving)):
