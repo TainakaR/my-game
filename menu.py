@@ -4,7 +4,18 @@ from epilogue import show_epilogue  # エピローグを表示する関数をイ
 from minigame import run_minigame  # ミニゲームを実行する関数をインポート
 from result import show_result  # 結果画面を表示する関数をインポート
 
+class ScoreManager:
+    def __init__(self):
+        self.total_score = 10
+
+    def add_score(self, score):
+        self.total_score += score
+
+    def get_score(self):
+        return self.total_score
+
 def show_menu(screen):
+    score_manager = ScoreManager()
     # 画像を読み込む
     try:
         background = pygame.image.load('assets/images/menu_background.png')
@@ -40,6 +51,6 @@ def show_menu(screen):
                     # エピローグを表示
                     show_epilogue(screen)  
                     # ミニゲームを開始
-                    run_minigame(screen)
+                    run_minigame(screen, score_manager)
                     # 結果画面の表示
-                    show_result(screen)
+                    show_result(screen, score_manager)

@@ -10,7 +10,7 @@ BAR_SPEED = 7
 FPS = 30
 total_score = 0
 
-def run_minigame(screen):
+def run_minigame(screen, score_manager):
     # Pygameの初期化
     pygame.init()
     clock = pygame.time.Clock()
@@ -101,4 +101,5 @@ def run_minigame(screen):
     global total_score
     total_score = sum(scores)
     print(f'Score A: {scores[0]}, Score B: {scores[1]}, Score C: {scores[2]}, Total Score D: {total_score}')
-    return total_score
+
+    score_manager.add_score(total_score)

@@ -16,7 +16,7 @@ face_1 = pygame.image.load("assets/images/face_1.png")  # 49以下の場合
 face_2 = pygame.image.load("assets/images/face_2.png")  # 50～89の場合
 face_3 = pygame.image.load("assets/images/face_3.png")  # 90以上の場合
 
-def show_result(screen):
+def show_result(screen, score_manager):
     # 最初の背景を表示
     screen.blit(background_image, (0, 0))
     pygame.display.flip()
@@ -29,7 +29,7 @@ def show_result(screen):
 
     # 画面左側にスコアを表示
     font = pygame.font.Font(None, 74)
-    score_display = total_score + 10
+    score_display = score_manager.get_score()
     score_text = font.render(str(score_display), True, (255, 255, 255))
     screen.blit(score_text, (100, 250))  # 位置は調整可能
     
@@ -44,7 +44,7 @@ def show_result(screen):
     # 最終的な画面を更新
     pygame.display.flip()
 
-    print(f"Total Score: {total_score}")
+    print(f"Total Score: {score_manager.get_score()}")
 
     # 終了までの待機
     waiting = True
