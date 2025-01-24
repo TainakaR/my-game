@@ -28,7 +28,7 @@ def show_epilogue(screen):
             pygame.display.flip()  # 画面を更新
             
             # 0.5秒待つ
-            pygame.time.delay(1500)  # 500ミリ秒 (1.5秒) の遅延
+            pygame.time.delay(500)  # 500ミリ秒 (1.5秒) の遅延
             
             # 画像が表示されたらループを抜ける
             break

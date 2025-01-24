@@ -2,6 +2,7 @@ import pygame
 import sys
 from epilogue import show_epilogue  # エピローグを表示する関数をインポート
 from minigame import run_minigame  # ミニゲームを実行する関数をインポート
+from result import show_result  # 結果画面を表示する関数をインポート
 
 def show_menu(screen):
     # 画像を読み込む
@@ -20,13 +21,11 @@ def show_menu(screen):
         return  # ロゴ画像が読み込めない場合、メニュー表示を終了
 
     start_button = pygame.image.load('assets/images/menu_start_button.png')
-    rules_button = pygame.image.load('assets/images/menu_rules_button.png')
 
     while True:
         screen.blit(background, (0, 0))  # 背景を描画
         screen.blit(logo, logo_rect)  # ロゴを描画
         screen.blit(start_button, (300, 200))  # Startボタンを描画
-        screen.blit(rules_button, (300, 300))  # Rulesボタンを描画
         pygame.display.flip()  # 画面を更新
 
         for event in pygame.event.get():
@@ -42,7 +41,5 @@ def show_menu(screen):
                     show_epilogue(screen)  
                     # ミニゲームを開始
                     run_minigame(screen)
-
-                # Rulesボタンがクリックされた場合（処理はまだ未実装）
-                elif 300 <= mouse_pos[0] <= 500 and 300 <= mouse_pos[1] <= 350:
-                    print("Rules button clicked - implementation required.")
+                    # 結果画面の表示
+                    show_result(screen)

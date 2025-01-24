@@ -4,10 +4,11 @@ import pygame
 WIDTH = 800
 HEIGHT = 600
 BOX_WIDTH = 150
-BOX_HEIGHT = 400
+BOX_HEIGHT = 350
 BAR_HEIGHT = 20
 BAR_SPEED = 7
 FPS = 30
+total_score = 0
 
 def run_minigame(screen):
     # Pygameの初期化
@@ -70,6 +71,9 @@ def run_minigame(screen):
                         current_bar += 1  # 次のバーに移動
                         if current_bar < 3:
                             bar_moving[current_bar] = True  # 次のバーを動かし始める
+                        if current_bar >= 3:  # すべてのバーが止まった場合、ループを終了
+                            running = False
+                        
 
         # バーの動き
         for i in range(len(bar_moving)):
@@ -94,7 +98,7 @@ def run_minigame(screen):
         clock.tick(FPS)
 
     # 得点の合計計算
+    global total_score
     total_score = sum(scores)
     print(f'Score A: {scores[0]}, Score B: {scores[1]}, Score C: {scores[2]}, Total Score D: {total_score}')
-
-    pygame.quit()
+    return total_score
