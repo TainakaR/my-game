@@ -47,7 +47,7 @@ def show_menu(screen):
             if event.type == pygame.MOUSEBUTTONDOWN:
                 mouse_pos = pygame.mouse.get_pos()
                 # Startボタンがクリックされた場合
-                if 300 <= mouse_pos[0] <= 500 and 200 <= mouse_pos[1] <= 250:
+                if 300 <= mouse_pos[0] <= 500 and 350 <= mouse_pos[1] <= 430:
                     # エピローグを表示
                     show_epilogue(screen)  
                     # ミニゲームを開始

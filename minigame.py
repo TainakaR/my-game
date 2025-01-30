@@ -34,9 +34,9 @@ def run_minigame(screen, score_manager):
 
     # ボックスの位置を設定
     boxes_positions = [
-        (70, 100),   # ボックス1の位置
-        (290, 100),  # ボックス2の位置
-        (510, 100)   # ボックス3の位置
+        (95, 100),   # ボックス1の位置
+        (325, 100),  # ボックス2の位置
+        (555, 100)   # ボックス3の位置
     ]
 
     # バーの初期位置と状態の設定
@@ -88,7 +88,7 @@ def run_minigame(screen, score_manager):
                     bar_directions[i] = 1   # 下に移動
 
         # スクリーンの描画
-        screen.fill((255, 255, 255))  # 背景を白に設定
+        screen.fill((255,240, 165))  # 背景を白に設定
         for i in range(3):
             screen.blit(box_images[i], boxes_positions[i])
             bar_y = boxes_positions[i][1] + bars_positions[i]  # ボックスの下にバーを表示

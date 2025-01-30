@@ -19,10 +19,7 @@ face_2 = pygame.image.load("assets/images/face_2.png")  # 50～89の場合
 face_3 = pygame.image.load("assets/images/face_3.png")  # 90以上の場合
 
 def show_result(screen, score_manager):
-    # 最初の背景を表示
-    screen.blit(background_image, (0, 0))
-    pygame.display.flip()
-    
+
     # 1秒間待機
     time.sleep(1)
 
