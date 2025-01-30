@@ -9,6 +9,8 @@ pygame.init()
 screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Result")
 
+font_path = 'assets/fonts/g_brushtappitsu_freeR.ttf'
+
 # 画像の読み込み
 background_image = pygame.image.load("assets/images/result_background1.png")
 background_image2 = pygame.image.load("assets/images/result_background2.png")
@@ -28,15 +30,15 @@ def show_result(screen, score_manager):
     screen.blit(background_image2, (0, 0))
 
     # 画面左側にスコアを表示
-    font = pygame.font.Font(None, 74)
+    font = pygame.font.Font(font_path, 300)
     score_display = score_manager.get_score()
-    score_text = font.render(str(score_display), True, (255, 255, 255))
-    screen.blit(score_text, (100, 250))  # 位置は調整可能
+    score_text = font.render(str(score_display), True, (0, 0, 0))
+    screen.blit(score_text, (20, 200))  # 位置は調整可能
     
     # 画面右側に顔の画像を表示
-    if score_display <= 49:
+    if score_display <= 59:
         screen.blit(face_1, (300, 0))  # 49以下
-    elif 50 <= score_display <= 89:
+    elif 60 <= score_display <= 99:
         screen.blit(face_2, (300, 0))  # 50 ~ 89
     else:  # 90以上
         screen.blit(face_3, (300, 0))  # 90以上
