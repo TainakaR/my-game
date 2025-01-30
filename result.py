@@ -34,12 +34,12 @@ def show_result(screen, score_manager):
     screen.blit(score_text, (100, 250))  # 位置は調整可能
     
     # 画面右側に顔の画像を表示
-    if total_score <= 49:
-        screen.blit(face_1, (600, 250))  # 49以下
-    elif 50 <= total_score <= 89:
-        screen.blit(face_2, (600, 250))  # 50 ~ 89
+    if score_display <= 49:
+        screen.blit(face_1, (300, 0))  # 49以下
+    elif 50 <= score_display <= 89:
+        screen.blit(face_2, (300, 0))  # 50 ~ 89
     else:  # 90以上
-        screen.blit(face_3, (600, 250))  # 90以上
+        screen.blit(face_3, (300, 0))  # 90以上
 
     # 最終的な画面を更新
     pygame.display.flip()
