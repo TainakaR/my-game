@@ -10,8 +10,8 @@ screen = pygame.display.set_mode((800, 600))
 pygame.display.set_caption("Result")
 
 # 画像の読み込み
-background_image = pygame.image.load("assets/images/menu_background.png")
-background_image2 = pygame.image.load("assets/images/menu_background2.png")
+background_image = pygame.image.load("assets/images/result_background1.png")
+background_image2 = pygame.image.load("assets/images/result_background2.png")
 face_1 = pygame.image.load("assets/images/face_1.png")  # 49以下の場合
 face_2 = pygame.image.load("assets/images/face_2.png")  # 50～89の場合
 face_3 = pygame.image.load("assets/images/face_3.png")  # 90以上の場合

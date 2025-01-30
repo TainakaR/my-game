@@ -2,7 +2,7 @@ import pygame
 
 def show_epilogue(screen):
     # 画像ファイル名のリスト
-    images = ['epilogue_image1.png', 'epilogue_image2.png', 'epilogue_image3.png']
+    images = ['assets/images/epilogue_image1.png', 'assets/images/epilogue_image2.png', 'assets/images/epilogue_image3.png']
     image_count = len(images)
     
     # スライドショーを実行する回数
